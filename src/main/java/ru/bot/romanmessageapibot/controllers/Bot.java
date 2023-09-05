@@ -11,14 +11,18 @@ import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import ru.bot.romanmessageapibot.service.BackOrderClient;
 
 @Service
 @RequiredArgsConstructor
 public class Bot extends TelegramLongPollingBot {
 
+    private final BackOrderClient client;
+
     @Autowired
-    public Bot(@Value("${bot.token}") String botToken) {
+    public Bot(@Value("${bot.token}") String botToken, BackOrderClient client) {
         super(botToken);
+        this.client = client;
     }
 
     @SneakyThrows
@@ -26,7 +30,7 @@ public class Bot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
 
         if (update.hasMessage() && update.getMessage().hasText()) {
-            System.out.println("test");
+            System.out.println(client.readAllDomains());
             SendMessage message = SendMessage.builder()
                     .chatId(update.getMessage().getChatId())
                     .text("Hello world")

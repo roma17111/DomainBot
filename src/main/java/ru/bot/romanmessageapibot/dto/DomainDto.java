@@ -34,7 +34,7 @@ public class DomainDto {
     String old;
 
     @JsonProperty(value = "delete_date")
-    LocalDate deleteDate;
+    String deleteDate;
 
     boolean rkn;
     boolean judicial;
