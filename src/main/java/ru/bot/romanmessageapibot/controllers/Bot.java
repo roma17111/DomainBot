@@ -68,7 +68,8 @@ public class Bot extends TelegramLongPollingBot {
 
     public void registerAndCheckUser(Update update) {
         long chatId = update.getMessage().getChatId();
-        String hello = String.format("\uD83D\uDC4B Привет %s, Это бот по сбору информации о доменах.\n",
+        String hello = String.format("\uD83D\uDC4B Привет %s, Это бот по сбору информации о доменах.\n " +
+                        "Раз в день бот будет тебе присылать обновлённую информацию о количестве доменов.\n",
                 update.getMessage().getChat().getFirstName());
         String info = client.getInfo();
         BotUser user = userRepository.findByChatId(chatId);
