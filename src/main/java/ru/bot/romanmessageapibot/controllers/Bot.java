@@ -31,7 +31,7 @@ public class Bot extends TelegramLongPollingBot {
 
         if (update.hasMessage() && update.getMessage().hasText()) {
             client.deleteAllDomains();
-            client.saveAllDomains();
+            client.runCheckingDomains();
             SendMessage message = SendMessage.builder()
                     .chatId(update.getMessage().getChatId())
                     .text("Hello world")

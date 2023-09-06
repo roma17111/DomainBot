@@ -41,11 +41,6 @@ public class BackOrderClient {
         }
     }
 
-    public void saveAllDomains() {
-        List<DomainDto> domains = readAllDomains();
-        domains.parallelStream()
-                .forEach(el -> repository.save(Domain.mapDtoToDomain(el)));
-    }
 
     public List<Domain> getAllDomains() {
         return Domain.mapAll(readAllDomains());
