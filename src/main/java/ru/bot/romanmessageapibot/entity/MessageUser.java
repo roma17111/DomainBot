@@ -20,12 +20,12 @@ public class MessageUser {
     @Column(name = "message_id")
     long messageId;
 
-    @OneToOne
-    @JoinColumn(name = "user",referencedColumnName = "user_id" , nullable = false)
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_name",referencedColumnName = "user_id")
     BotUser user;
 
-    @Column(name = "request" , nullable = false, length = 2048)
+    @Column(name = "request", nullable = false, length = 2048)
     String request;
-    @Column(name = "response" , nullable = false, length = 2048)
+    @Column(name = "response", nullable = false, length = 2048)
     String response;
 }

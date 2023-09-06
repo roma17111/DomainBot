@@ -49,11 +49,11 @@ public class BackOrderClient {
     private String getDateFormat() {
         LocalDate date = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return date.format(formatter);
+        return "\uD83D\uDCC5"+date.format(formatter);
     }
 
     public String getInfo() {
-        return String.format("%s \n Собрано %d доменов.",
+        return String.format("%s \n \uD83C\uDF10 Собрано %d доменов.",
                 getDateFormat(),
                 countDomains());
     }

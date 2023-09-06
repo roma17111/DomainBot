@@ -49,6 +49,7 @@ public class MessageService {
     public void updateDomains() {
         client.deleteAllDomains();
         client.runCheckingDomains();
+        log.info(LocalDateTime.now()+ "\n Обновлён список доменов в БД");
     }
 
     @Scheduled(cron = "0 00 07 * * *")
@@ -59,6 +60,7 @@ public class MessageService {
             saveMessage(el,"", client.getInfo());
             userRepository.save(el);
            sendMessage(el.getChatId(), client.getInfo());
+           log.info(el.toString()+ " Получил обновлённую информацию о количестве доменов");
         });
     }
 
@@ -69,6 +71,7 @@ public class MessageService {
                 .response(response)
                 .build();
         messageRepository.save(message);
+        log.info("Сообщение " + message + " добавлено в БД messages");
 
     }
 }
