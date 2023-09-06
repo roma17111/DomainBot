@@ -2,14 +2,11 @@ package ru.bot.romanmessageapibot.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.bot.romanmessageapibot.dto.DomainDto;
-
 import java.io.IOException;
 import java.net.URL;
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -20,8 +17,7 @@ public class BackOrderClient {
 
     public List<DomainDto> readAllDomains() {
         try {
-            return new ObjectMapper().readValue(new URL(url), new TypeReference<List<DomainDto>>() {
-            });
+            return new ObjectMapper().readValue(new URL(url), new TypeReference<List<DomainDto>>() {});
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
