@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="create-daily-domain.1" author="Roman Yakimenko">
+        <preConditions>
+            <not>
+                <tableExists tableName="daily_domains"/>
+            </not>
+        </preConditions>
+            <createTable tableName="daily_domains">
+                <column name="domain_id" type="BIGINT" autoIncrement="true">
+                    <constraints primaryKey="true"/>
+                </column>
+                <column name="domain_name" type="VARCHAR(1000)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="hotness" type="BIGINT">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="price" type="BIGINT">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="x_value" type="BIGINT">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="yandex_tic" type="BIGINT">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="links" type="BIGINT">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="visitors" type="BIGINT">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="registrar" type="VARCHAR(500)">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="old" type="INTEGER">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="delete_date" type="TIMESTAMP">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="rkn" type="BOOLEAN">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="judicial" type="BOOLEAN">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="block" type="BOOLEAN">
+                    <constraints nullable="false"/>
+                </column>
+            </createTable>
+            <createIndex tableName="daily_domains" indexName="DOMAIN_NAME_INDEX">
+                <column name="domain_name">
+                </column>
+            </createIndex>
+    </changeSet>
+</databaseChangeLog>

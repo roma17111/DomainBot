@@ -5,7 +5,7 @@ import lombok.experimental.FieldDefaults;
 import javax.persistence.*;
 import java.util.Date;
 
-//@Entity
+@Entity
 @Table(name = "daily_domains")
 @Data
 @AllArgsConstructor
@@ -38,7 +38,7 @@ public class Domain {
     long links;
     @Column(name = "visitors", nullable = false)
     long visitors;
-    @Column(name = "registrar", nullable = false)
+    @Column(name = "registrar", nullable = false, length = 500)
     String registrar;
     @Column(name = "old", nullable = false)
     int old;
