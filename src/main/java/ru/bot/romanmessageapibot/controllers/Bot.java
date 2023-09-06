@@ -77,6 +77,7 @@ public class Bot extends TelegramLongPollingBot {
                     .lastMessageAt(LocalDateTime.now())
                     .chatId(chatId)
                     .build();
+            userRepository.save(user);
             messageService.saveMessage(user, "/start", hello + info);
             messageService.sendMessage(chatId, hello + info);
             log.info("Пользователь " + user + " зарегистрирован. ");
