@@ -2,17 +2,18 @@ package ru.bot.romanmessageapibot.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder(toBuilder = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class DomainDto {
 
@@ -31,10 +32,10 @@ public class DomainDto {
     long links;
     long visitors;
     String registrar;
-    String old;
+    int old;
 
     @JsonProperty(value = "delete_date")
-    String deleteDate;
+    Date deleteDate;
 
     boolean rkn;
     boolean judicial;
