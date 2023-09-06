@@ -2,8 +2,12 @@ package ru.bot.romanmessageapibot.entity;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import ru.bot.romanmessageapibot.dto.DomainDto;
+
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "daily_domains")
@@ -54,4 +58,30 @@ public class Domain {
 
     @Column(name = "block", nullable = false)
     boolean block;
+
+    public static List<Domain> mapAll(List<DomainDto> domains) {
+        List<Domain> domainList = new ArrayList<>();
+        domains.forEach(el -> domainList.add(mapDtoToDomain(el)));
+        return domainList;
+    }
+
+    public static Domain mapDtoToDomain(DomainDto domainDto) {
+        return Domain.builder()
+                .domainName(domainDto.getDomainName())
+                .hotness(domainDto.getHotness())
+                .price(domainDto.getPrice())
+                .xValue(domainDto.getXValue())
+                .yandexTic(domainDto.getYandexTic())
+                .links(domainDto.getLinks())
+                .visitors(domainDto.getVisitors())
+                .registrar(domainDto.getRegistrar())
+                .old(domainDto.getOld())
+                .deleteDate(domainDto.getDeleteDate())
+                .rkn(domainDto.isRkn())
+                .judicial(domainDto.isJudicial())
+                .block(domainDto.isBlock())
+                .build();
+    }
+
+
 }

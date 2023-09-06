@@ -8,4 +8,6 @@ import ru.bot.romanmessageapibot.entity.Domain;
 public interface DomainRepository extends JpaRepository<Domain,Long> {
 
     long count();
+
+    Domain findByDomainName(String domainName);
 }
