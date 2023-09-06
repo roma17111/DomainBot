@@ -18,7 +18,7 @@ public class MessageUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "message_id")
-    long domainId;
+    long messageId;
 
     @OneToOne
     @JoinColumn(name = "user",referencedColumnName = "user_id" , nullable = false)

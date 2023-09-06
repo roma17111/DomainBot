@@ -112,27 +112,56 @@ public class BackOrderClient {
         thread2.start();
         thread3.start();
         thread4.start();
+        try {
+            thread1.join();
+            thread2.join();
+            thread3.join();
+            thread4.join();
+
+        } catch (InterruptedException e) {
+            log.error(e.getMessage(),e);
+            throw new RuntimeException(e);
+        }
     }
 
     public void deleteAllDomains() {
+        addDomainsTOCollections();
+        System.out.println("collections added");
         Thread thread1 = new Thread() {
             public void run() {
-                repository.deleteAll();
+                for (Domain domain : Domain.mapAll(collection1)) {
+                    if (repository.findByDomainName(domain.getDomainName()) != null) {
+                        repository.delete(domain);
+                    }
+                }
             }
         };
         Thread thread2 = new Thread() {
             public void run() {
-                repository.deleteAll();
+                for (Domain domain : Domain.mapAll(collection2)) {
+                    if (repository.findByDomainName(domain.getDomainName()) != null) {
+                        repository.delete(domain);
+                    }
+                }
+
             }
         };
         Thread thread3 = new Thread() {
             public void run() {
-                repository.deleteAll();
+                for (Domain domain : Domain.mapAll(collection3)) {
+                    if (repository.findByDomainName(domain.getDomainName()) != null) {
+                        repository.delete(domain);
+                    }
+                }
             }
         };
         Thread thread4 = new Thread() {
             public void run() {
-                repository.deleteAll();
+                for (Domain domain : Domain.mapAll(collection4)) {
+                    if (repository.findByDomainName(domain.getDomainName()) != null) {
+                        repository.delete(domain);
+                    }
+                }
             }
         };
         thread1.start();
@@ -149,6 +178,5 @@ public class BackOrderClient {
             log.error(e.getMessage(),e);
             throw new RuntimeException(e);
         }
-
     }
 }
