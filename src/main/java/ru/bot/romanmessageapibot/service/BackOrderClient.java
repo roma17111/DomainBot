@@ -30,7 +30,7 @@ public class BackOrderClient {
 
     private final DomainRepository repository;
 
-    public List<DomainDto> readAllDomains() {
+    private List<DomainDto> readAllDomains() {
         try {
             return new ObjectMapper().readValue(new URL(url), new TypeReference<List<DomainDto>>() {
             });
@@ -42,11 +42,7 @@ public class BackOrderClient {
     }
 
 
-    public List<Domain> getAllDomains() {
-        return Domain.mapAll(readAllDomains());
-    }
-
-    public long countDomains() {
+     private long countDomains() {
         return repository.count();
     }
 
@@ -84,6 +80,7 @@ public class BackOrderClient {
 
     public void runCheckingDomains() {
         addDomainsTOCollections();
+        System.out.println("collections added");
         Thread thread1 = new Thread() {
             public void run() {
                 repository.saveAll(Domain.mapAll(collection1));

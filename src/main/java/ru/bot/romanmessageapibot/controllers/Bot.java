@@ -5,18 +5,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import ru.bot.romanmessageapibot.entity.BotUser;
 import ru.bot.romanmessageapibot.repository.UserRepository;
 import ru.bot.romanmessageapibot.service.BackOrderClient;
-import ru.bot.romanmessageapibot.service.MessageBotService;
 import ru.bot.romanmessageapibot.service.MessageService;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +37,7 @@ public class Bot extends TelegramLongPollingBot {
 
     @PostConstruct
     public void init() {
-        messageService.registerBot();
+        messageService.registerBot(this);
     }
 
     @SneakyThrows
@@ -47,13 +45,8 @@ public class Bot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
         String text = update.getMessage().getText();
         if (update.hasMessage() && update.getMessage().hasText()) {
-            client.deleteAllDomains();
             client.runCheckingDomains();
-            SendMessage message = SendMessage.builder()
-                    .chatId(update.getMessage().getChatId())
-                    .text("Hello world")
-                    .build();
-            execute(message);
+            messageService.sendMessage(update.getMessage().getChatId(),client.getInfo());
         }
 
     }
@@ -63,4 +56,26 @@ public class Bot extends TelegramLongPollingBot {
         return "Roman Bot";
     }
 
+
+    public void registerAndCheckUser(Update update) {
+        long chatId = update.getMessage().getChatId();
+        String hello = String.format("Привет %s, Это бот по сбору информации о доменах.\n",
+                update.getMessage().getChat().getFirstName());
+        String info = client.getInfo();
+        BotUser user = userRepository.findByChatId(chatId);
+        if (user == null) {
+
+            user = BotUser.builder()
+                    .lastMessageAt(LocalDateTime.now())
+                    .chatId(chatId)
+                    .build();
+            messageService.saveMessage(user, "/start", hello + info);
+            userRepository.save(user);
+            messageService.sendMessage(chatId, hello + info);
+        } else {
+            messageService.saveMessage(user, "/start", hello + info);
+            messageService.sendMessage(chatId, hello + info);
+        }
+
+    }
 }

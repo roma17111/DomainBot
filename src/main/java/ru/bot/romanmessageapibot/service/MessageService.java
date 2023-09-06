@@ -22,21 +22,20 @@ public class MessageService {
 
     private final BackOrderClient client;
     private final UserRepository userRepository;
-    private final MessageBotService messageBotService;
     private final MessageRepository messageRepository;
 
 
     private TelegramLongPollingBot bot;
 
 
-    public void registerBot() {
+    public void registerBot(TelegramLongPollingBot bot) {
         this.bot = bot;
     }
 
     public void sendMessage(long chatId, String text) {
         SendMessage message = SendMessage.builder()
                 .chatId(chatId)
-                .text("Hello world")
+                .text(text)
                 .build();
         try {
             bot.execute(message);
