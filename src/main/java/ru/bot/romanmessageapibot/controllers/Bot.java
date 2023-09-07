@@ -49,14 +49,6 @@ public class Bot extends TelegramLongPollingBot {
                 case "/info" -> {
                     getInfo(update);
                 }
-                case "/test" -> {
-                    System.out.println("start task");
-                    StopWatch stopWatch = new StopWatch();
-                    stopWatch.start();
-                    messageService.updateDomains();
-                    stopWatch.stop();
-                    System.out.println(stopWatch.prettyPrint());
-                }
                 default -> {
                     getDefaultCommand(update,text);
                 }
