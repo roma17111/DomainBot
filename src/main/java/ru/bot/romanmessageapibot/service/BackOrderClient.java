@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.bot.romanmessageapibot.dto.DomainDto;
 import ru.bot.romanmessageapibot.entity.Domain;
 import ru.bot.romanmessageapibot.exceptions.IncorrectUrlException;
 import ru.bot.romanmessageapibot.repository.DomainRepository;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -78,6 +80,7 @@ public class BackOrderClient {
         }
     }
 
+    @Transactional
     public void runCheckingDomains() {
         addDomainsTOCollections();
         System.out.println("collections added");
@@ -121,59 +124,8 @@ public class BackOrderClient {
         }
     }
 
+    @Transactional
     public void deleteAllDomains() {
-        addDomainsTOCollections();
-        System.out.println("collections added");
-        Thread thread1 = new Thread() {
-            public void run() {
-                for (Domain domain : Domain.mapAll(collection1)) {
-                    if (repository.findByDomainName(domain.getDomainName()) != null) {
-                        repository.delete(domain);
-                    }
-                }
-            }
-        };
-        Thread thread2 = new Thread() {
-            public void run() {
-                for (Domain domain : Domain.mapAll(collection2)) {
-                    if (repository.findByDomainName(domain.getDomainName()) != null) {
-                        repository.delete(domain);
-                    }
-                }
-
-            }
-        };
-        Thread thread3 = new Thread() {
-            public void run() {
-                for (Domain domain : Domain.mapAll(collection3)) {
-                    if (repository.findByDomainName(domain.getDomainName()) != null) {
-                        repository.delete(domain);
-                    }
-                }
-            }
-        };
-        Thread thread4 = new Thread() {
-            public void run() {
-                for (Domain domain : Domain.mapAll(collection4)) {
-                    if (repository.findByDomainName(domain.getDomainName()) != null) {
-                        repository.delete(domain);
-                    }
-                }
-            }
-        };
-        thread1.start();
-        thread2.start();
-        thread3.start();
-        thread4.start();
-        try {
-            thread1.join();
-            thread2.join();
-            thread3.join();
-            thread4.join();
-
-        } catch (InterruptedException e) {
-            log.error(e.getMessage(),e);
-            throw new RuntimeException(e);
-        }
+        repository.deleteAll();
     }
 }

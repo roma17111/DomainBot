@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ru.bot.romanmessageapibot.controllers.BotClient;
 import ru.bot.romanmessageapibot.entity.BotUser;
 import ru.bot.romanmessageapibot.entity.MessageUser;
 import ru.bot.romanmessageapibot.repository.MessageRepository;
@@ -25,12 +26,7 @@ public class MessageService {
     private final MessageRepository messageRepository;
 
 
-    private TelegramLongPollingBot bot;
-
-
-    public void registerBot(TelegramLongPollingBot bot) {
-        this.bot = bot;
-    }
+    private final BotClient botClient;
 
     public void sendMessage(long chatId, String text) {
         SendMessage message = SendMessage.builder()
@@ -38,22 +34,20 @@ public class MessageService {
                 .text(text)
                 .build();
         try {
-            bot.execute(message);
+            botClient.execute(message);
         } catch (TelegramApiException e) {
             log.error(e.getMessage(),e);
         }
     }
 
-    @Scheduled(cron = "0 00 03 * * *")
-    @Async
+    @Scheduled(cron = "0 0 3 * * *")
     public void updateDomains() {
         client.deleteAllDomains();
         client.runCheckingDomains();
         log.info(LocalDateTime.now()+ "\n Обновлён список доменов в БД");
     }
 
-    @Scheduled(cron = "0 00 07 * * *")
-    @Async
+    @Scheduled(cron = "0 0 10 * * *")
     public void sendInfoToUser() {
         userRepository.findAll().forEach(el -> {
             el.setLastMessageAt(LocalDateTime.now());

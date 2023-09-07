@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import javax.validation.constraints.Pattern;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

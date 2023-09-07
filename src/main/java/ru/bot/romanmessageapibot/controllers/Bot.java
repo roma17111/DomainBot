@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.bot.romanmessageapibot.entity.BotUser;
@@ -36,11 +37,6 @@ public class Bot extends TelegramLongPollingBot {
         this.userRepository = userRepository;
     }
 
-    @PostConstruct
-    public void init() {
-        messageService.registerBot(this);
-    }
-
     @SneakyThrows
     @Override
     public void onUpdateReceived(Update update) {
@@ -52,6 +48,14 @@ public class Bot extends TelegramLongPollingBot {
                 }
                 case "/info" -> {
                     getInfo(update);
+                }
+                case "/test" -> {
+                    System.out.println("start task");
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    messageService.updateDomains();
+                    stopWatch.stop();
+                    System.out.println(stopWatch.prettyPrint());
                 }
                 default -> {
                     getDefaultCommand(update,text);
